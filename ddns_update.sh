@@ -89,4 +89,4 @@ function check_ip_changes {
 }
 
 # 每 5 分钟调用一次 check_ip_changes 函数,检查 IP 是否发生变化
-while true; do check_ip_changes && sleep 60; done &
+while true; do check_ip_changes && sleep 300; done &
