@@ -9,8 +9,8 @@
 #############################################################
 
 # 自行修改 Cloudflare_Zone_ID & Cloudflare_API_Tokens & Domain_Record
-Cloudflare_Zone_ID="***"
-Cloudflare_API_Tokens="***"
+Cloudflare_Zone_ID="type in zoneID"
+Cloudflare_API_Tokens="type in token"
 Domain_Record="ddns.example.com"
 
 # 为防止大量请求 API , 使用两个文件保存旧的 IP 地址
