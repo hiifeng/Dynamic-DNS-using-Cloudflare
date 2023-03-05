@@ -51,10 +51,10 @@ Record_Id=$(echo "$Record_Info" | jq -r ".result[0].id")
 Record_Proxy=$(echo "$Record_Info" | jq -r ".result[0].proxied")
 
 if [[ $Record_Id = "null" ]]; then
-	# 没有记录时新增一个域名
+    # 没有记录时新增一个域名
     Record_Info=$(curl -s -X POST "$Create_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":false}")
 else
-	# 有记录时更新域名的 IP 地址
+    # 有记录时更新域名的 IP 地址
     Update_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records/${Record_Id}";
     Record_Info=$(curl -s -X PUT "$Update_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":$Record_Proxy}")
 fi
