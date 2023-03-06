@@ -43,28 +43,28 @@ function update_IP {
 	Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
 
 	if [[ $Record_Info_Success != "true" ]]; then
-	    echo -e "\e[31m连接Cloudflare失败，请检查 Cloudflare_Zone_ID 和 Cloudflare_API_Tokens 设置是否正确! \e[0m"
-	    exit 1;
+		echo -e "\e[31m连接Cloudflare失败，请检查 Cloudflare_Zone_ID 和 Cloudflare_API_Tokens 设置是否正确! \e[0m"
+		exit 1;
 	fi
 
 	Record_Id=$(echo "$Record_Info" | jq -r ".result[0].id")
 	Record_Proxy=$(echo "$Record_Info" | jq -r ".result[0].proxied")
 
 	if [[ $Record_Id = "null" ]]; then
- 	   # 没有记录时新增一个域名
- 	   Record_Info=$(curl -s -X POST "$Create_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":false}")
+ 		# 没有记录时新增一个域名
+ 		Record_Info=$(curl -s -X POST "$Create_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":false}")
 	else
-	    # 有记录时更新域名的 IP 地址
-	    Update_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records/${Record_Id}";
-	    Record_Info=$(curl -s -X PUT "$Update_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":$Record_Proxy}")
+		# 有记录时更新域名的 IP 地址
+		Update_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records/${Record_Id}";
+		Record_Info=$(curl -s -X PUT "$Update_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":$Record_Proxy}")
 	fi
 
 	Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
 
 	if [[ $Record_Info_Success = "true" ]]; then
- 	   echo -e "\e[31m域名IP更新成功! \e[0m"
+ 		echo -e "\e[31m域名IP更新成功! \e[0m"
 	else
- 	   echo -e "\e[31m域名IP更新失败! \e[0m"
+ 		echo -e "\e[31m域名IP更新失败! \e[0m"
 	fi
 }
 
