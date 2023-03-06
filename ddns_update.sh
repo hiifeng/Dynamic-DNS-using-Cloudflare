@@ -4,7 +4,7 @@
 # ddnsupdate v1.0.0
 # Dynamic DNS using Cloudflare
 # Author: ifeng, <https://t.me/HiaiFeng>
-# Usage: please refer to `ddns_update.sh`
+# Usage: https://www.hicairo.com/post/61.html
 #
 #############################################################
 
