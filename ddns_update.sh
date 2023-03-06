@@ -36,36 +36,36 @@ if [ -n "$IPv6" ] && ! [[ $(ip add show) =~ $IPv6 ]]; then
 fi
 
 function update_IP {
-Record_Info_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records?type=${Record_Type}&name=${Domain_Record}"
-Create_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records"
+	Record_Info_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records?type=${Record_Type}&name=${Domain_Record}"
+	Create_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records"
 
-Record_Info=$(curl -s -X GET "$Record_Info_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json")
-Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
+	Record_Info=$(curl -s -X GET "$Record_Info_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json")
+	Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
 
-if [[ $Record_Info_Success != "true" ]]; then
-    echo -e "\e[31m连接Cloudflare失败，请检查 Cloudflare_Zone_ID 和 Cloudflare_API_Tokens 设置是否正确! \e[0m"
-    exit 1;
-fi
+	if [[ $Record_Info_Success != "true" ]]; then
+	    echo -e "\e[31m连接Cloudflare失败，请检查 Cloudflare_Zone_ID 和 Cloudflare_API_Tokens 设置是否正确! \e[0m"
+	    exit 1;
+	fi
 
-Record_Id=$(echo "$Record_Info" | jq -r ".result[0].id")
-Record_Proxy=$(echo "$Record_Info" | jq -r ".result[0].proxied")
+	Record_Id=$(echo "$Record_Info" | jq -r ".result[0].id")
+	Record_Proxy=$(echo "$Record_Info" | jq -r ".result[0].proxied")
 
-if [[ $Record_Id = "null" ]]; then
-    # 没有记录时新增一个域名
-    Record_Info=$(curl -s -X POST "$Create_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":false}")
-else
-    # 有记录时更新域名的 IP 地址
-    Update_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records/${Record_Id}";
-    Record_Info=$(curl -s -X PUT "$Update_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":$Record_Proxy}")
-fi
+	if [[ $Record_Id = "null" ]]; then
+ 	   # 没有记录时新增一个域名
+ 	   Record_Info=$(curl -s -X POST "$Create_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":false}")
+	else
+	    # 有记录时更新域名的 IP 地址
+	    Update_Record_Api="https://api.cloudflare.com/client/v4/zones/${Cloudflare_Zone_ID}/dns_records/${Record_Id}";
+	    Record_Info=$(curl -s -X PUT "$Update_Record_Api" -H "Authorization: Bearer $Cloudflare_API_Tokens" -H "Content-Type:application/json" --data "{\"type\":\"$Record_Type\",\"name\":\"$Domain_Record\",\"content\":\"$New_IP\",\"proxied\":$Record_Proxy}")
+	fi
 
-Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
+	Record_Info_Success=$(echo "$Record_Info" | jq -r ".success")
 
-if [[ $Record_Info_Success = "true" ]]; then
-    echo -e "\e[31m域名IP更新成功! \e[0m"
-else
-    echo -e "\e[31m域名IP更新失败! \e[0m"
-fi
+	if [[ $Record_Info_Success = "true" ]]; then
+ 	   echo -e "\e[31m域名IP更新成功! \e[0m"
+	else
+ 	   echo -e "\e[31m域名IP更新失败! \e[0m"
+	fi
 }
 
 function check_ip_changes {
