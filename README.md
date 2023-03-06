@@ -10,7 +10,7 @@ Telegram: https://t.me/HiaiFeng <br>
 <p><b><li>Cloudflare API 不支持对 .cf, .ga, .gq, .ml, .tk 后缀域名的更新。</li></b></p>
 
 # 使用方法：
-<p>请参考以下文档进行安装：https://www.hicairo.com/post/61.html</p>
+<p>安装教程：https://www.hicairo.com/post/61.html</p>
 
 # 反馈与交流：
 <p>在使用过程中，如果遇到问题，请使用Telegram与我联系。（ https://t.me/HiaiFeng ）</p>
