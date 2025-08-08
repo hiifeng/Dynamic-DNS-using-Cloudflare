@@ -7,9 +7,6 @@ Create By ifeng<br>
 Web Site: https://www.hicairo.com <br>
 Telegram: https://t.me/HiaiFeng <br>
 
-# HiDNS 免费域名：
-[HiDNS](https://www.hidoha.net) 近日推出永久免费计划，敬请关注。[HiDNS Lifetime Free Plan](https://www.hidoha.net/news/important-update-on-hidns-free-domain-service)
-
 # 简介：
 本项目用于在光猫或软路由上使用 Cloudflare.com 的动态域名服务。目前电信/移动/联通对于家庭宽带，均封闭了 80 & 443 端口，如果在家庭宽带中运行 Web Server ，必须在域名后加上端口进行访问。使用 Cloudflare.com 的动态域名和 Cloudflare Origin Rules 服务，可完美解决上述问题。
 
